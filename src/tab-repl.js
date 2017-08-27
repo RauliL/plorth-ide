@@ -3,16 +3,18 @@ import EventTarget from "event-target-shim";
 import isFunction from "lodash/isFunction";
 import trim from "lodash/trim";
 
-import { el } from "redom";
+import { el, mount } from "redom";
 
-export default class Input extends EventTarget {
+export default class Tab extends EventTarget {
   constructor () {
     super();
 
-    this.prompt = el(".prompt", "plorth:1:0>");
-    this.input = el("input");
+    this.lineCounter = 1;
 
-    this.el = el(".input", this.prompt, this.input);
+    this.buffer = el(".buffer");
+    this.prompt = el("span.prompt", "plorth:1:0>");
+    this.input = el("input");
+    this.el = el(".tab-repl", this.buffer, el(".input", this.prompt, this.input));
 
     this.input.addEventListener("keydown", ev => {
       const callback = this[`onKey${ev.key}`];
@@ -24,6 +26,29 @@ export default class Input extends EventTarget {
     });
   }
 
+  print (text, className) {
+    const container = el("li", `${text}`);
+
+    if (className) {
+      container.className = className;
+    }
+    if (isFunction(window.getSelection)) {
+      container.addEventListener("click", () => {
+        const selection = window.getSelection();
+        const range = document.createRange();
+
+        range.selectNodeContents(container);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      });
+    }
+    mount(this.buffer, container);
+  }
+
+  update({ interpreter }) {
+    this.prompt.innerText = `plorth:${this.lineCounter}:${interpreter.depth()}>`;
+  }
+
   onmount () {
     this.input.focus();
   }
@@ -32,7 +57,9 @@ export default class Input extends EventTarget {
     const text = trim(this.input.value);
 
     if (text.length > 0) {
+      this.print(`${this.prompt.innerText} ${text}`, "user-input");
       this.previous = text;
+      ++this.lineCounter;
       this.dispatchEvent({type: "input", text});
     }
     this.input.value = "";

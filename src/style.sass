@@ -1,3 +1,9 @@
+$color-background: #282c34
+$color-foreground: #abb2bf
+
+$font-size: 1.1em
+$font-stack: "Inconsolata", monospace
+
 *
   box-sizing: border-box
   margin: 0
@@ -6,12 +12,13 @@
   outline: 0
 
 body
-  background: #282c34
-  color: #abb2bf
-  font: 1.1em 'Inconsolata', monospace
+  background: $color-background
+  color: $color-foreground
+  font-family: $font-stack
+  font-size: $font-size
 
 .stack-panel
-  background: #171b23
+  background: darken($color-background, 10%)
   position: absolute
   top: 0
   bottom: 0
@@ -26,56 +33,60 @@ body
     padding: 0.4em 1em
 
     &:hover
-      background: #383c44
+      background: darken($color-background, 5%)
 
-.editor-panel
+.tab-container
   position: absolute
   top: 0
   bottom: 0
   left: 0
   right: 80%
   width: 80%
+
+.tab-repl
   overflow-x: hidden
   overflow-y: auto
 
-.buffer
-  list-style: none
+  .buffer
+    list-style: none
 
-  li
-    padding: 0.4em 1em
-    white-space: pre
+    li
+      padding: 0.4em 1em
+      white-space: pre
+      cursor: pointer
 
-    &:hover
-      background: #383c44
+      &:hover
+        background: lighten($color-background, 5%)
 
-    &.user-input
-      color: #828997
+      &.user-input
+        color: #828997
 
-    &.error
-      color: #e06c75
+      &.error
+        color: #e06c75
 
-.input
-  background: #99bbff
-  display: flex
-  flex-direction: row
-  flex-wrap: nowrap
-  justify-content: flex-start
-  align-content: stretch
-  align-items: flex-start
+  .input
+    background: #99bbff
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    justify-content: flex-start
+    align-content: stretch
+    align-items: flex-start
 
-  .prompt
-    color: #002b36
-    display: inline-block
-    order: 0
-    flex: 0 1 auto
-    align-self: auto
-    padding: 0.4em 0.4em 0.4em 1em
+    .prompt
+      color: #002b36
+      display: inline-block
+      order: 0
+      flex: 0 1 auto
+      align-self: auto
+      padding: 0.4em 0.4em 0.4em 1em
 
-  input
-    background: transparent
-    color: #2c323b
-    display: inline-block
-    font: 1.1em 'Inconsolata', monospace
-    flex: 1 1 auto
-    align-self: auto
-    padding: 0.4em 0
+    input
+      background: transparent
+      color: #2c323b
+      display: inline-block
+      font-family: $font-stack
+      font-size: $font-size
+      flex: 1 1 auto
+      align-self: auto
+      padding: 0.4em 0
