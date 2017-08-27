@@ -1,0 +1,81 @@
+*
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+  border: 0
+  outline: 0
+
+body
+  background: #282c34
+  color: #abb2bf
+  font: 1.1em 'Inconsolata', monospace
+
+.stack-panel
+  background: #171b23
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 80%
+  right: 0
+  width: 20%
+  overflow-x: hidden
+  overflow-y: auto
+  list-style: none
+
+  li
+    padding: 0.4em 1em
+
+    &:hover
+      background: #383c44
+
+.editor-panel
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 80%
+  width: 80%
+  overflow-x: hidden
+  overflow-y: auto
+
+.buffer
+  list-style: none
+
+  li
+    padding: 0.4em 1em
+    white-space: pre
+
+    &:hover
+      background: #383c44
+
+    &.user-input
+      color: #828997
+
+    &.error
+      color: #e06c75
+
+.input
+  background: #99bbff
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  justify-content: flex-start
+  align-content: stretch
+  align-items: flex-start
+
+  .prompt
+    color: #002b36
+    display: inline-block
+    order: 0
+    flex: 0 1 auto
+    align-self: auto
+    padding: 0.4em 0.4em 0.4em 1em
+
+  input
+    background: transparent
+    color: #2c323b
+    display: inline-block
+    font: 1.1em 'Inconsolata', monospace
+    flex: 1 1 auto
+    align-self: auto
+    padding: 0.4em 0
