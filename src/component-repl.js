@@ -1,20 +1,24 @@
-import EventTarget from "event-target-shim";
+import Component from "./component";
+import OutputBuffer from "./output-buffer";
 
 import isFunction from "lodash/isFunction";
 import trim from "lodash/trim";
 
-import { el, mount } from "redom";
+import { el } from "redom";
 
-export default class Tab extends EventTarget {
+export default class ComponentREPL extends Component {
   constructor () {
     super();
 
     this.lineCounter = 1;
 
-    this.buffer = el(".buffer");
-    this.prompt = el("span.prompt", "plorth:1:0>");
-    this.input = el("input");
-    this.el = el(".tab-repl", this.buffer, el(".input", this.prompt, this.input));
+    this.el = el(".component-repl",
+      this.output = new OutputBuffer(),
+      el(".input",
+        this.prompt = el("span.prompt", "plorth:1:0>"),
+        this.input = el("input")
+      )
+    );
 
     this.input.addEventListener("keydown", ev => {
       const callback = this[`onKey${ev.key}`];
@@ -26,26 +30,11 @@ export default class Tab extends EventTarget {
     });
   }
 
-  print (text, className) {
-    const container = el("li", `${text}`);
-
-    if (className) {
-      container.className = className;
-    }
-    if (isFunction(window.getSelection)) {
-      container.addEventListener("click", () => {
-        const selection = window.getSelection();
-        const range = document.createRange();
-
-        range.selectNodeContents(container);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      });
-    }
-    mount(this.buffer, container);
+  get name () {
+    return "REPL";
   }
 
-  update({ interpreter }) {
+  update(interpreter) {
     this.prompt.innerText = `plorth:${this.lineCounter}:${interpreter.depth()}>`;
   }
 
@@ -57,7 +46,7 @@ export default class Tab extends EventTarget {
     const text = trim(this.input.value);
 
     if (text.length > 0) {
-      this.print(`${this.prompt.innerText} ${text}`, "user-input");
+      this.output.print(`${this.prompt.innerText} ${text}`, "user-input");
       this.previous = text;
       ++this.lineCounter;
       this.dispatchEvent({type: "input", text});
