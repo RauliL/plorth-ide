@@ -1,20 +1,22 @@
+import ComponentDebugger from "./component-debugger";
 import ComponentREPL from "./component-repl";
 import Plorth from "plorth";
 import StackPanel from "./stack-panel";
 
-import { el, mount } from "redom";
+import { el, mount, unmount } from "redom";
 
 export default class App {
   constructor () {
     this.interpreter = new Plorth();
     this.repl = new ComponentREPL();
+    this.debugger = new ComponentDebugger();
     this.currentComponent = this.repl;
 
-    this.components = [this.repl];
+    this.components = [this.repl, this.debugger];
 
     this.el = el(".container",
       el(".component-container",
-        el("ul.button-list",
+        this.buttonList = el("ul.button-list",
            this.components.map(component => {
              const button = el("button", component.name);
 
@@ -28,7 +30,9 @@ export default class App {
                unmount(this.componentPlaceholder, this.currentComponent);
                mount(this.componentPlaceholder, component);
                this.currentComponent = component;
-               // TODO: Remove ".active" from other buttons.
+               this.buttonList.querySelectorAll("button").forEach(otherButton => {
+                 otherButton.className = "";
+               });
                button.className = "active";
              });
 
@@ -43,16 +47,17 @@ export default class App {
     this.interpreter.print = text => this.currentComponent.output.print(text);
     this.interpreter.printErr = text => this.currentComponent.output.print(text, "error");
 
-    this.repl.addEventListener("input", ev => {
-      const { text } = ev;
+    this.repl.addEventListener("input", ev => this.execute(ev.text));
+    this.debugger.addEventListener("execute", ev => this.execute(ev.sourceCode));
+  }
 
-      try {
-        this.interpreter.execute(text);
-      } catch (err) {
-        this.repl.print(`${err}`, "error");
-      }
-      this.stack.update(this.interpreter);
-      this.repl.update(this.interpreter);
-    });
+  execute (source) {
+    try {
+      this.interpreter.execute(source);
+    } catch (err) {
+      this.currentComponent.output.print(`${err}`, "error");
+    }
+    this.stack.update(this.interpreter);
+    this.repl.update(this.interpreter);
   }
 }
