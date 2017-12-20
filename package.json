@@ -9,6 +9,14 @@
   },
   "author": "Rauli Laine <rauli.laine@iki.fi> (https://raulil.github.io/)",
   "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RauliL/plorth-ide.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RauliL/plorth-ide/issues"
+  },
+  "homepage": "https://github.com/RauliL/plorth-ide#readme",
   "engines": {
     "node": ">=8.4.0"
   },
@@ -21,8 +29,8 @@
     "event-target-shim": "^2.0.0",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
-    "plorth": "^1.0.0-alpha.4",
-    "plorth-parser": "^0.1.0",
+    "plorth": "^1.0.0-alpha.7",
+    "plorth-parser": "^1.0.3",
     "redom": "^3.3.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
