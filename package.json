@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Online IDE for Plorth programming language",
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack",
     "watch": "webpack -d --watch",
     "server": "webpack-dev-server -d --content-base ./docs"
   },
@@ -15,6 +15,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-minify-webpack-plugin": "^0.2.0",
     "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.7",
     "event-target-shim": "^3.0.0",

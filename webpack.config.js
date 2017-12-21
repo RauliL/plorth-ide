@@ -1,3 +1,6 @@
+const webpack = require('webpack');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+
 module.exports = {
   entry: "./src/index.js",
   output: {
@@ -6,6 +9,10 @@ module.exports = {
   node: {
     fs: "empty",
   },
+  plugins: [
+    new webpack.DefinePlugin({ "process.env": { NODE_ENV: "'production'" } }),
+    new MinifyPlugin()
+  ],
   module: {
     rules: [
       {
