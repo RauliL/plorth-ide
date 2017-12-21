@@ -1,6 +1,6 @@
 import ComponentDebugger from "./component-debugger";
 import ComponentREPL from "./component-repl";
-import Plorth from "plorth";
+import Plorth from "./plorth";
 import StackPanel from "./stack-panel";
 
 import { el, mount, unmount } from "redom";
